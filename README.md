@@ -14,11 +14,11 @@ Server will be run on port: 8000
 
 First you have to build the image
 ```
-docker build -t aggregator .
+docker build -t intellisense-backend .
 ```
 
 And then you can run the server
 ```
-docker run -d --rm --name my-server -p 8000:8000 aggregator
+docker run -d --rm --name my-server -p 8000:8000 intellisense-backend
 ```
 
