@@ -7,7 +7,7 @@ services:
       dockerfile: ./Dockerfile
     command: npm run start
     ports:
-      - 8080:8080
+      - 8000:8000
     volumes:
       - .:/user/src/app
       - /usr/src/app/node_modules
