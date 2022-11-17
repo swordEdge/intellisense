@@ -12,24 +12,24 @@ function isValidPeriod(period: number) {
 }
 
 function averageData(period: number, data: AggregateData): AggregateData {
-  const { time, ...rest } = data;
-  const result = Object.entries(rest).reduce((acc, [key, seriesData]) => {
-    let aggregatedData: number[] = [];
-    let sum = 0;
-    seriesData.forEach((item, index) => {
-      if (index === 0 || index % period !== 0) {
-        sum = sum + item;
+  const { time, ...entryObj } = data;
+  const result = Object.entries(entryObj).reduce((acc, [key, serialData]) => {
+    let aggregatedData: number[] = []; // average data
+    let sum = serialData[0];
+    for (let index = 1; index < serialData.length; index++) {
+      if (index % period !== 0) {
+        sum = sum + serialData[index];
       } else {
         aggregatedData.push(sum / period);
-        sum = item;
+        sum = serialData[index];
       }
-    });
+    }
     return {
       ...acc,
       [key]: aggregatedData,
     };
   }, {});
-  let aggregatedTimeSeries: string[] = [];
+  let aggregatedTimeSeries: string[] = []; // average time
   for (let index = 0; index < time.length / period; index++) {
     console.log(
       "ddddd",
@@ -50,27 +50,25 @@ function averageData(period: number, data: AggregateData): AggregateData {
 }
 
 function aggregateData(period: number, data: ApiData): ApiData {
-  return Object.entries(data).reduce((acc, [key, value]) => {
-    return {
+  return Object.entries(data).reduce((acc, [key, dataToAverage]) => ({
       ...acc,
-      [key]: averageData(period, value),
-    };
-  }, {});
+      [key]: averageData(period, dataToAverage),
+    }), {});
 }
 
 export const aggregate = async (req: Request, res: Response) => {
   try {
     const { period } = req.body;
-    const endPoint =
-      process.env.ENDPOINT ||
-      "https://reference.intellisense.io/test.dataprovider";
+    const endPoint = process.env.ENDPOINT || "https://reference.intellisense.io/test.dataprovider";
     if (isValidPeriod(period)) {
-      const timeSeriesData = await axios.get(endPoint);
-      const result = aggregateData(period, timeSeriesData.data);
+      const apiData = await axios.get(endPoint);
+      const result = aggregateData(period, apiData.data);
       return res.status(200).json(result);
     } else {
       console.log(MESSAGES.INVALID_PERIOD_DATA);
-      return res.status(400);
+      return res.status(400).json({
+        message: MESSAGES.INVALID_PERIOD_DATA,
+      });
     }
   } catch (error) {
     console.log(error);
