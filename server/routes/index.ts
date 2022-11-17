@@ -6,6 +6,6 @@ import { intelliController } from '../controllers';
 
 const appRoutes = express.Router();
 
-appRoutes.post("", intelliController.calculate);
+appRoutes.post("", intelliController.aggregate);
 
 export default appRoutes;
