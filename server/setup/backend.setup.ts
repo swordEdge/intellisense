@@ -6,7 +6,7 @@ import 'dotenv/config';
 import appRoutes from '../routes';
 import { MESSAGES } from '../constants';
 
-const port = process.env.PORT || 8002;
+const port = process.env.PORT || 8080;
 
 const backendSetup = (app: Express) => {
     app.use(express.json());
