@@ -17,7 +17,7 @@
       "paths": {
         "@exmpl/*": ["./*"]
       },
-      "types": ["node"],
+      "types": ["node", "reflect-metadata","jest"],
       "incremental": true,
       "composite": true
     },

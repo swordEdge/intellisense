@@ -4,21 +4,10 @@
 
 ### Using npm
 
-To install the node package and its dependencies
-```
-npm install
-```
+1. npm install
+2. npm run start
 
-To run tests
-```
-npm test
-```
-
-To run the server
-```
-npm start
-```
-
+Server will be run on port: 8080
 ### Using Docker
 
 #### 1. Using [Docker](https://www.docker.com/)

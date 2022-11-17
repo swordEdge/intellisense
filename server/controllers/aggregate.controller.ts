@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
-import { MESSAGES } from "../constants";
 import "dotenv/config";
+import { MESSAGES } from "../constants";
 
 type AggregateData = Record<string, number[]> & { time: string[] };
 export type ApiData = Record<string, AggregateData>;
@@ -14,31 +14,30 @@ const isValidPeriod = (period: number) => {
 const averageData = (period: number, data: AggregateData): AggregateData => {
   const { time, ...entryObj } = data;
   const result = Object.entries(entryObj).reduce((acc, [key, serialData]) => {
-    let aggregatedData: number[] = []; // average data
-    let sum = serialData[0];
-    for (let index = 1; index < serialData.length; index++) {
-      if (index % period !== 0) {
-        sum = sum + serialData[index];
-      } else {
-        aggregatedData.push(sum / period);
-        sum = serialData[index];
+    let averagedData: number[] = []; // average data
+    let sum = 0;
+    serialData.forEach((item, index) => {
+      sum = sum + item;
+      if (index % period === period - 1) {
+        averagedData.push(sum / period);
+        sum = 0;
       }
-    }
+    })
     return {
       ...acc,
-      [key]: aggregatedData,
+      [key]: averagedData,
     };
   }, {});
   
-  let aggregatedTimeSeries: string[] = []; // average time
+  let averagedTimes: string[] = []; // average time
   for (let index = 0; index < Math.floor(time.length / period); index++) { 
     const averageTime = new Date((Date.parse(time[index * period]) + Date.parse(time[(index + 1) * period - 1])) / 2).toISOString();
-    aggregatedTimeSeries.push(averageTime);
+    averagedTimes.push(averageTime);
   }
-  return Object.assign(result, { time: aggregatedTimeSeries }) as AggregateData;
+  return Object.assign(result, { time: averagedTimes }) as AggregateData;
 }
 
-const aggregateData = (period: number, data: ApiData): ApiData => {
+export const aggregateData = (period: number, data: ApiData): ApiData => {
   return Object.entries(data).reduce((acc, [key, dataToAverage]) => ({
       ...acc,
       [key]: averageData(period, dataToAverage),
