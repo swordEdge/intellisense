@@ -68,6 +68,34 @@ describe('aggregateController', () => {
         metric2: [29, 49],
         time: ['2021-06-09T18:14:30.000Z', '2021-06-09T18:24:30.000Z']
       }
-    })  
-  })
+    });
+  });
+
+  it('should aggreagate empty array', () => {
+    const inputData = {
+      assetId1: {
+        metric1: [],
+        metric2: [],
+        time: [],
+      },
+      assetId2: {
+        metric1: [],
+        metric2: [],
+        time: [],
+      }
+    };
+    const period = 30;    
+    expect(aggregateData(period, inputData)).toEqual({
+      assetId1: {
+        metric1: [],
+        metric2: [],
+        time: []
+      },
+      assetId2: {
+        metric1: [],
+        metric2: [],
+        time: []
+      }
+    });
+  });
 })
