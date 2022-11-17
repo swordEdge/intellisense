@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon server/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +13,10 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+    "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
     "body-parser": "^1.20.1",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",

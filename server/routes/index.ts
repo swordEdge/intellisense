@@ -1,8 +1,8 @@
 import express from 'express';
-import { intelliController } from '../controllers';
+import { aggregateController } from '../controllers';
 
 const appRoutes = express.Router();
 
-appRoutes.post("", intelliController.aggregate);
+appRoutes.post("", aggregateController.aggregate);
 
 export default appRoutes;

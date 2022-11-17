@@ -1,5 +1,5 @@
-import * as intelliController from './intellisense.controller';
+import * as aggregateController from './aggregate.controller';
 
 export {
-    intelliController
+    aggregateController
 };
